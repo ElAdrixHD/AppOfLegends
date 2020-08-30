@@ -1,6 +1,7 @@
 import 'package:app_of_legends/src/blocs/champion_detail_page/champion_details_bloc.dart';
 import 'package:app_of_legends/src/models/champions.dart';
 import 'package:app_of_legends/src/models/full_champion_info.dart';
+import 'package:app_of_legends/src/widgets/spell_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,7 +100,12 @@ class _ChampionDetailPageState extends State<ChampionDetailPage> {
   }
 
   Widget _spellsChampion(FullChampion fullInfoChampion) {
-    return Center(child: Text("2"),);
+    return ListView.builder(
+      itemCount: fullInfoChampion.spells.length+1,
+      itemBuilder: (ctx, i){
+        return ListTile(title: (i == 0)? SpellView(fullInfoChampion.passive,i): SpellView(fullInfoChampion.spells[i-1],i),);
+      },
+    );
   }
 
   //Deprecated
@@ -181,6 +187,7 @@ class _ChampionDetailPageState extends State<ChampionDetailPage> {
   Widget _showPageView(FullChampion fullInfoChampion) {
     return PageView(
       controller: _pageController,
+      physics: NeverScrollableScrollPhysics(),
       onPageChanged: (int index){
         setState(() {
           _currentPage = index;
