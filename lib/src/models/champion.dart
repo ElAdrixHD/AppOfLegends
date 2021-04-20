@@ -25,7 +25,7 @@ class Champion{
   final String? lore;
   final List<String>? allytips;
   final List<String>? enemytips;
-  final List<Spell> spells;
+  final List<Spell>? spells;
 
 
   Champion(this.id, this.version, this.key, this.name, this.title, this.blurb, this.info, this.image, this.tags, this.partype, this.stats, this.skins, this.lore, this.allytips, this.enemytips, this.spells);

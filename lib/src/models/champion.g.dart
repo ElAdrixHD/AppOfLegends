@@ -25,8 +25,8 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) {
     json['lore'] as String?,
     (json['allytips'] as List<dynamic>?)?.map((e) => e as String).toList(),
     (json['enemytips'] as List<dynamic>?)?.map((e) => e as String).toList(),
-    (json['spells'] as List<dynamic>)
-        .map((e) => Spell.fromJson(e as Map<String, dynamic>))
+    (json['spells'] as List<dynamic>?)
+        ?.map((e) => Spell.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }

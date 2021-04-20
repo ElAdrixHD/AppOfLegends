@@ -9,6 +9,8 @@ class ChampionsProvider {
     'Accept': '*/*',
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive',
+    "Access-Control-Allow-Credentials": true, // Required for cookies, authorization headers with HTTPS
+    "Access-Control-Allow-Origin": '*',
   };
   final BaseOptions _baseOptions = BaseOptions(headers: customHeaders, baseUrl: URL);
   late final Dio _dio;
