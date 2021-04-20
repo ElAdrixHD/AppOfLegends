@@ -1,40 +1,43 @@
-import 'dart:convert';
+import 'package:app_of_legends/src/models/champion.dart';
+import 'package:dio/dio.dart';
 
-import 'package:app_of_legends/src/models/full_champion_info.dart';
-import 'package:http/http.dart' as http;
-import 'package:app_of_legends/src/models/champions.dart';
+const String URL = "http://ddragon.leagueoflegends.com/";
 
 class ChampionsProvider {
-  Future<Champions> getChampions(String lastVersion) async{
-    final res = await http.get("https://ddragon.leagueoflegends.com/cdn/$lastVersion/data/es_ES/champion.json",headers: {"Content-type": "application/json", "charset":"utf-8"});
-    if(res.body != null){
-      final champions = championsFromJson(utf8.decode(res.bodyBytes));
-      if(champions != null){
-        return champions;
-      }
-      return null;
-    }
-    throw Exception("res.body es null");
+  static var customHeaders = {
+    'content-type': 'application/json; charset=UTF-8',
+    'Accept': '*/*',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+  };
+  final BaseOptions _baseOptions = BaseOptions(headers: customHeaders, baseUrl: URL);
+  late final Dio _dio;
+
+  ChampionsProvider(){
+    _dio = Dio(_baseOptions);
   }
 
-  Future<String> getLastVersion() async{
-    final res = await http.get("https://ddragon.leagueoflegends.com/api/versions.json",headers: {"Content-type": "application/json", "charset":"utf-8"});
-    if(res.body != null){
-      final versions = versionFromJson(utf8.decode(res.bodyBytes));
-      return versions.first;
-    }
-    throw Exception("No hay versiones");
-  }
-
-  Future<FullInfoChampion> getFullInfo(String lastVersion, String id) async{
-    final res = await http.get("http://ddragon.leagueoflegends.com/cdn/$lastVersion/data/es_ES/champion/$id.json",headers: {"Content-type": "application/json", "charset":"utf-8"});
-    if(res.body != null){
-      final champions = fullInfoChampionFromJson(utf8.decode(res.bodyBytes), id);
-      if(champions != null){
-        return champions;
-      }
+  Future<List<Champion>?> getChampions() async{
+    final String version = await _getLastVersion();
+    final Response<Map<String, dynamic>> res = await _dio.get("cdn/$version/data/es_ES/champion.json");
+    if(res.data != null){
+      final Map<String, dynamic> championsMap = res.data?["data"];
+      final List<Champion> champs = championsMap.values.map((e) => Champion.fromJson(e)).toList();
+      return champs;
+    }else{
       return null;
     }
-    throw Exception("res.body es null");
   }
+
+  Future<String> _getLastVersion() async{
+    final Response res = await _dio.get("api/versions.json");
+    List<dynamic> versions = res.data;
+    return versions.first;
+  }
+
+  Future<String> getImageURL(String id) async{
+    final String version = await _getLastVersion();
+    return "http://ddragon.leagueoflegends.com/cdn/$version/img/champion/$id.png";
+  }
+
 }
