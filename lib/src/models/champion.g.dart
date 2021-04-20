@@ -19,6 +19,15 @@ Champion _$ChampionFromJson(Map<String, dynamic> json) {
     (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
     json['partype'] as String,
     Stat.fromJson(json['stats'] as Map<String, dynamic>),
+    (json['skins'] as List<dynamic>?)
+        ?.map((e) => Skin.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    json['lore'] as String?,
+    (json['allytips'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    (json['enemytips'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    (json['spells'] as List<dynamic>)
+        .map((e) => Spell.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 
@@ -34,4 +43,9 @@ Map<String, dynamic> _$ChampionToJson(Champion instance) => <String, dynamic>{
       'tags': instance.tags,
       'partype': instance.partype,
       'stats': instance.stats,
+      'skins': instance.skins,
+      'lore': instance.lore,
+      'allytips': instance.allytips,
+      'enemytips': instance.enemytips,
+      'spells': instance.spells,
     };

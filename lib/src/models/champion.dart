@@ -2,6 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'image.dart';
 import 'info.dart';
+import 'skin.dart';
+import 'spell.dart';
 import 'stat.dart';
 
 part 'champion.g.dart';
@@ -19,8 +21,14 @@ class Champion{
   final List<String> tags;
   final String partype;
   final Stat stats;
+  final List<Skin>? skins;
+  final String? lore;
+  final List<String>? allytips;
+  final List<String>? enemytips;
+  final List<Spell> spells;
 
-  Champion(this.id, this.version, this.key, this.name, this.title, this.blurb, this.info, this.image, this.tags, this.partype, this.stats);
+
+  Champion(this.id, this.version, this.key, this.name, this.title, this.blurb, this.info, this.image, this.tags, this.partype, this.stats, this.skins, this.lore, this.allytips, this.enemytips, this.spells);
 
 
 
