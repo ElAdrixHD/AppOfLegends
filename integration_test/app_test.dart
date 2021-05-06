@@ -7,7 +7,7 @@ import 'package:app_of_legends/main.dart' as app;
 void main(){
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('verify text', (WidgetTester tester) async {
+  testWidgets('There is a gridview with data', (WidgetTester tester) async {
 
     app.main();
 
@@ -21,5 +21,7 @@ void main(){
       ),
       findsOneWidget,
     );
+
+    await tester.scrollUntilVisible(find.byWidgetPredicate((Widget widget) => widget is Text && widget.data == "Zyra"), 100);
   });
 }
