@@ -10,7 +10,6 @@ class ShowListChampionsPage extends StatelessWidget {
         create: (_) => ChampionsBloc()..add(LoadChampionsEvent()),
         child: BlocBuilder<ChampionsBloc, ChampionsState>(
           builder: (context, state) {
-            print(state.toString());
             final bloc = BlocProvider.of<ChampionsBloc>(context);
             return Scaffold(
                 appBar: AppBar(

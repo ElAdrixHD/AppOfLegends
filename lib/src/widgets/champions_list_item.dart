@@ -30,6 +30,7 @@ class ChampionsListItem extends StatelessWidget {
         ),
         Text(
           name,
+          key: Key("text_item_champion_$id"),
           overflow: TextOverflow.ellipsis,
         ),
       ],

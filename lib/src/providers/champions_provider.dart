@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:app_of_legends/src/models/champion.dart';
 import 'package:dio/dio.dart';
+
+import 'mocks/dio_adapter_mock.dart';
 
 const String URL = "http://ddragon.leagueoflegends.com/";
 
@@ -17,12 +21,16 @@ class ChampionsProvider {
 
   ChampionsProvider(){
     _dio = Dio(_baseOptions);
+    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+      print('RUNNING IN TEST ENV');
+      _dio.httpClientAdapter = DioAdapterMock();
+    }
   }
 
   Future<List<Champion>?> getChampions() async{
     final String version = await _getLastVersion();
     final Response<Map<String, dynamic>> res = await _dio.get("cdn/$version/data/es_ES/champion.json");
-    if(res.data != null){
+    if(res.data != null && res.statusCode == 200){
       final Map<String, dynamic> championsMap = res.data?["data"];
       final List<Champion> champs = championsMap.values.map((e) => Champion.fromJson(e)).toList();
       return champs;
